@@ -26,8 +26,8 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
     />
-    <script type="module" crossorigin src="./assets/index-CDp1d1_M.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-BdKKDJl0.css">
+    <script type="module" crossorigin src="./assets/index-Ci8yq8gY.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BXLbg3QP.css">
   </head>
   <body>
     <header class="topbar">
@@ -169,7 +169,7 @@
       </div>
       <div class="dialog-body credits">
         <p>
-          Map, building locations, and paths © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>;
+          Map, building locations, paths, roads, and parking © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>;
           map tiles by <a href="https://openfreemap.org/">OpenFreeMap</a> and <a href="https://openmaptiles.org/">OpenMapTiles</a>.
         </p>
         <p>Bus times from the Champaign-Urbana Mass Transit District's published schedule; they don't show live delays.</p>
@@ -348,6 +348,30 @@
               In Bus mode, trips only use stops within this walk of where you start and of class. If no stop is that
               close, the app shows the walk instead.
             </p>
+          </fieldset>
+          <fieldset>
+            <legend>Time to Park</legend>
+            <div class="seg" id="parkMinutesChoices"></div>
+            <p class="hint">In Car mode: finding a space, parking, and getting out of the lot or garage.</p>
+          </fieldset>
+          <fieldset>
+            <legend>Where You Park</legend>
+            <div class="seg" id="parkingChoices"></div>
+            <div class="search parking-search" id="parkingPicker" hidden>
+              <label for="parkingSearch" class="sr-only">Find Your Lot or Garage</label>
+              <input
+                type="search"
+                id="parkingSearch"
+                placeholder="Lot or garage name (try E15, C7)"
+                autocomplete="off"
+                role="combobox"
+                aria-autocomplete="list"
+                aria-expanded="false"
+                aria-controls="parkingResults"
+              />
+              <ul id="parkingResults" class="search-results" role="listbox" aria-label="Matching parking" hidden></ul>
+            </div>
+            <p class="hint" id="parkingHint"></p>
           </fieldset>
           <fieldset>
             <legend>Extra Time Before Class</legend>
