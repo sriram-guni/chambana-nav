@@ -26,8 +26,8 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
     />
-    <script type="module" crossorigin src="./assets/index-BEfazLHa.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-COlk65pA.css">
+    <script type="module" crossorigin src="./assets/index-BSyQUf-W.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DepoKLf4.css">
   </head>
   <body>
     <header class="topbar">
@@ -56,38 +56,27 @@
 
         <section class="trip-controls" aria-label="Where you are and how you're getting there">
           <label for="startBuilding" class="section-label">From</label>
-          <select id="startBuilding"></select>
-          <div class="location-buttons">
-            <button type="button" class="btn ghost small-btn gps-btn" id="gpsButton" aria-pressed="false">
-              <span data-icon="locate"></span><span class="btn-text">My Location</span>
+          <div class="from-row">
+            <select id="startBuilding"></select>
+            <button type="button" class="icon-btn gps-btn" id="gpsButton" aria-pressed="false" title="Use My Location">
+              <span data-icon="locate"></span><span class="btn-text sr-only">My Location</span>
             </button>
-            <button type="button" class="btn ghost small-btn" id="pickOnMap">
-              <span data-icon="pin"></span><span class="btn-text">Pick on Map</span>
+            <button type="button" class="icon-btn" id="pickOnMap" title="Pick on Map">
+              <span data-icon="pin"></span><span class="sr-only">Pick on Map</span>
             </button>
-            <button type="button" class="btn ghost small-btn home-btn" id="homeButton" aria-label="Home">
+            <button type="button" class="icon-btn" id="homeButton" aria-label="Home">
               <span data-icon="home"></span>
+            </button>
+            <button type="button" class="icon-btn" id="openSaveSpot" title="Save This Pinned Spot" aria-haspopup="dialog" hidden>
+              <span data-icon="bookmark"></span><span class="sr-only">Save This Pinned Spot</span>
             </button>
           </div>
           <p class="form-ok" id="placeStatus" role="status" hidden></p>
-          <form class="save-spot" id="saveSpot" hidden>
-            <label for="spotName">Save This Pinned Spot</label>
-            <div class="row">
-              <input type="text" id="spotName" placeholder="e.g. My apartment" autocomplete="off" />
-              <button type="submit" class="btn ghost save-btn">Save</button>
-            </div>
-            <button type="button" class="link-btn" id="saveSpotHome">Set as Home Instead</button>
-            <p id="saveSpotMessage" role="status" hidden></p>
-            <p class="hint">Drag the blue dot on the map to fine-tune the spot.</p>
-          </form>
           <p id="gpsStatus" role="status" hidden></p>
-          <div class="stop-control" id="stopControl" hidden>
-            <p class="section-label" id="stopHeading">Stops on the Way</p>
-            <div class="stop-scope" role="group" aria-labelledby="stopHeading">
-              <button type="button" class="stop-scope-btn" id="stopScopeEvery" aria-pressed="true">Every Time</button>
-              <button type="button" class="stop-scope-btn" id="stopScopeTrip" aria-pressed="false">This Trip Only</button>
-            </div>
-            <div id="stopEditor"></div>
-            <p class="hint stop-hint" id="stopScopeHint"></p>
+          <div class="stop-summary" id="stopControl" hidden>
+            <span class="section-label">Stops</span>
+            <span class="stop-summary-text" id="stopSummary"></span>
+            <button type="button" class="btn ghost small-btn" id="openStops" aria-haspopup="dialog">Edit Stops</button>
           </div>
           <fieldset class="mode-field">
             <legend class="sr-only">How are you getting there?</legend>
@@ -124,19 +113,77 @@
           <button type="button" class="link-btn" id="pickCancel">Cancel</button>
         </div>
         <div id="map" class="map" role="region" aria-label="Campus map"></div>
-        <p class="hint" id="mapCaption"></p>
+        <div class="map-foot">
+          <p class="hint" id="mapCaption"></p>
+          <button type="button" class="link-btn" id="openCredits" aria-haspopup="dialog">Credits</button>
+        </div>
       </section>
     </main>
 
-    <footer class="foot">
-      Map, building locations, and paths © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>; map
-      tiles by <a href="https://openfreemap.org/">OpenFreeMap</a> and <a href="https://openmaptiles.org/">OpenMapTiles</a>.
-      Bus times from the Champaign-Urbana Mass Transit District's published schedule; they don't show live delays.
-      Map search by <a href="https://nominatim.org/">Nominatim</a>: only what you search for is sent to it, and only when you choose Search the Map.
-      Weather forecast by <a href="https://open-meteo.com/">Open-Meteo.com</a> and warnings from the
-      <a href="https://www.weather.gov/">National Weather Service</a>, for campus as a whole (your location is never sent).
-      Your schedule is saved only in this browser.
-    </footer>
+    <dialog class="settings-dialog small-dialog" id="tripDetailsDialog" aria-labelledby="tripDetailsTitle">
+      <div class="dialog-head">
+        <h2 id="tripDetailsTitle">Trip Details</h2>
+        <button type="button" class="dialog-close" id="closeTripDetails" aria-label="Close trip details">&times;</button>
+      </div>
+      <div class="dialog-body trip-details" id="tripDetailsBody"></div>
+    </dialog>
+
+    <dialog class="settings-dialog small-dialog" id="stopsDialog" aria-labelledby="stopHeading">
+      <div class="dialog-head">
+        <h2 id="stopHeading">Stops on the Way</h2>
+        <button type="button" class="dialog-close" id="closeStops" aria-label="Close stops">&times;</button>
+      </div>
+      <div class="dialog-body">
+        <div class="stop-scope" role="group" aria-label="What changes apply to">
+          <button type="button" class="stop-scope-btn" id="stopScopeEvery" aria-pressed="true">Every Time</button>
+          <button type="button" class="stop-scope-btn" id="stopScopeTrip" aria-pressed="false">This Trip Only</button>
+        </div>
+        <p class="hint stop-hint" id="stopScopeHint"></p>
+        <div id="stopEditor"></div>
+      </div>
+    </dialog>
+
+    <dialog class="settings-dialog small-dialog" id="saveSpotDialog" aria-labelledby="saveSpotTitle">
+      <div class="dialog-head">
+        <h2 id="saveSpotTitle">Save This Pinned Spot</h2>
+        <button type="button" class="dialog-close" id="closeSaveSpot" aria-label="Close">&times;</button>
+      </div>
+      <div class="dialog-body">
+        <form class="save-spot" id="saveSpot">
+          <label for="spotName">Name</label>
+          <div class="row">
+            <input type="text" id="spotName" placeholder="e.g. My apartment" autocomplete="off" />
+            <button type="submit" class="btn ghost save-btn">Save</button>
+          </div>
+          <button type="button" class="link-btn" id="saveSpotHome">Set as Home Instead</button>
+          <p id="saveSpotMessage" role="status" hidden></p>
+          <p class="hint">Drag the blue dot on the map to fine-tune the spot.</p>
+        </form>
+      </div>
+    </dialog>
+
+    <dialog class="settings-dialog small-dialog" id="creditsDialog" aria-labelledby="creditsTitle">
+      <div class="dialog-head">
+        <h2 id="creditsTitle">Credits</h2>
+        <button type="button" class="dialog-close" id="closeCredits" aria-label="Close credits">&times;</button>
+      </div>
+      <div class="dialog-body credits">
+        <p>
+          Map, building locations, and paths © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>;
+          map tiles by <a href="https://openfreemap.org/">OpenFreeMap</a> and <a href="https://openmaptiles.org/">OpenMapTiles</a>.
+        </p>
+        <p>Bus times from the Champaign-Urbana Mass Transit District's published schedule; they don't show live delays.</p>
+        <p>
+          Map search by <a href="https://nominatim.org/">Nominatim</a>: only what you search for is sent to it, and only when you
+          choose Search the Map.
+        </p>
+        <p>
+          Weather forecast by <a href="https://open-meteo.com/">Open-Meteo.com</a> and warnings from the
+          <a href="https://www.weather.gov/">National Weather Service</a>, for campus as a whole (your location is never sent).
+        </p>
+        <p>Your schedule is saved only in this browser.</p>
+      </div>
+    </dialog>
 
     <dialog class="settings-dialog classes-dialog" id="classesDialog" aria-labelledby="classesTitle">
       <div class="dialog-head">
