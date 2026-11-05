@@ -25,9 +25,9 @@
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
-    />
-    <script type="module" crossorigin src="./assets/index-CuJsHFq-.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-CbowpEz3.css">
+    />
+    <script type="module" crossorigin src="./assets/index-zLrn7-TE.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CbO4uKt2.css">
   </head>
   <body>
     <header class="topbar">
@@ -128,6 +128,14 @@
         <button type="button" class="dialog-close" id="closeTripDetails" aria-label="Close trip details">&times;</button>
       </div>
       <div class="dialog-body trip-details" id="tripDetailsBody"></div>
+    </dialog>
+
+    <dialog class="settings-dialog small-dialog" id="directionsDialog" aria-labelledby="directionsTitle">
+      <div class="dialog-head">
+        <h2 id="directionsTitle">Directions</h2>
+        <button type="button" class="dialog-close" id="closeDirections" aria-label="Close directions">&times;</button>
+      </div>
+      <div class="dialog-body" id="directionsBody"></div>
     </dialog>
 
     <dialog class="settings-dialog small-dialog" id="stopsDialog" aria-labelledby="stopHeading">
@@ -473,6 +481,6 @@
         </section>
       </div>
     </dialog>
-
+
   </body>
 </html>
