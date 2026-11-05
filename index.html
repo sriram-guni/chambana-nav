@@ -26,8 +26,8 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
     />
-    <script type="module" crossorigin src="./assets/index-RjMjlJT9.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-TXwVulwd.css">
+    <script type="module" crossorigin src="./assets/index-45LvVIbl.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index--0-hH3j2.css">
   </head>
   <body>
     <header class="topbar">
@@ -35,9 +35,11 @@
         <img class="brand-mark" src="./logo.svg" alt="" width="40" height="40" />
         <div class="brand-text">
           <h1>Illini Wayfinder</h1>
-          <p class="tagline">Know when to leave for your next class</p>
         </div>
-        <time class="topbar-clock" id="clock"></time>
+        <div class="topbar-time">
+          <time class="topbar-clock" id="clock"></time>
+          <span class="topbar-next" id="nextClass" hidden></span>
+        </div>
         <button type="button" class="settings-btn" id="openClasses" aria-haspopup="dialog">
           <span data-icon="calendar"></span>
           <span>Classes</span>
@@ -68,17 +70,16 @@
             <button type="button" class="icon-btn" id="homeButton" aria-label="Home">
               <span data-icon="home"></span>
             </button>
+            <!-- Stops on the way to the next class, in a popup; the number shows how many. -->
+            <button type="button" class="icon-btn stops-btn" id="openStops" aria-haspopup="dialog" hidden>
+              <span data-icon="flag"></span><span class="stop-count" id="stopCount" aria-hidden="true" hidden></span>
+            </button>
             <button type="button" class="icon-btn" id="openSaveSpot" title="Save This Pinned Spot" aria-haspopup="dialog" hidden>
               <span data-icon="bookmark"></span><span class="sr-only">Save This Pinned Spot</span>
             </button>
           </div>
           <p class="form-ok" id="placeStatus" role="status" hidden></p>
           <p id="gpsStatus" role="status" hidden></p>
-          <div class="stop-summary" id="stopControl" hidden>
-            <span class="section-label">Stops</span>
-            <span class="stop-summary-text" id="stopSummary"></span>
-            <button type="button" class="btn ghost small-btn" id="openStops" aria-haspopup="dialog">Edit Stops</button>
-          </div>
           <fieldset class="mode-field">
             <legend class="sr-only">How are you getting there?</legend>
             <div class="seg" id="modeChoices"></div>
