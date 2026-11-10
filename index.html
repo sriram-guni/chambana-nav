@@ -26,8 +26,8 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
     />
-    <script type="module" crossorigin src="./assets/index-C5Kd9-6B.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-CbO4uKt2.css">
+    <script type="module" crossorigin src="./assets/index-KvSYLGwQ.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-oH1ydASt.css">
   </head>
   <body>
     <header class="topbar">
@@ -60,7 +60,12 @@
         <section class="trip-controls" aria-label="Where you are and how you're getting there">
           <label for="startBuilding" class="section-label">From</label>
           <div class="from-row">
-            <select id="startBuilding"></select>
+            <!-- The picker can't wrap a long name, so its whole name is shown in the box under it,
+                 and the picker itself sits on top, invisible, to open the usual list when tapped. -->
+            <div class="from-picker">
+              <span class="from-picker-name" id="startBuildingName" aria-hidden="true"></span>
+              <select id="startBuilding"></select>
+            </div>
             <button type="button" class="icon-btn gps-btn" id="gpsButton" aria-pressed="false" title="Use My Location">
               <span data-icon="locate"></span><span class="btn-text sr-only">My Location</span>
             </button>
