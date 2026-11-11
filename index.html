@@ -26,7 +26,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
     />
-    <script type="module" crossorigin src="./assets/index-D-QGS4XB.js"></script>
+    <script type="module" crossorigin src="./assets/index-B2eMOyGd.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-CQIh2cjc.css">
   </head>
   <body>
@@ -449,10 +449,15 @@
             <p class="hint" id="timeZoneHint"></p>
           </fieldset>
           <fieldset>
+            <legend>Units</legend>
+            <div class="seg" id="unitsChoices"></div>
+            <p class="hint" id="unitsHint"></p>
+          </fieldset>
+          <fieldset>
             <legend>Area on the Map</legend>
             <div class="seg" id="campusRingChoices"></div>
             <p class="hint">
-              A dashed ring on the map, 10 km around the Main Quad, taking in Champaign, Urbana, and Savoy. Locations
+              A dashed ring on the map, <span id="areaRadius">10 km</span> around the Main Quad, taking in Champaign, Urbana, and Savoy. Locations
               outside it (GPS or a pinned spot) are refused.
             </p>
           </fieldset>
