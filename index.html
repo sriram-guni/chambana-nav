@@ -26,8 +26,8 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
     />
-    <script type="module" crossorigin src="./assets/index-DIAJeOJs.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-oH1ydASt.css">
+    <script type="module" crossorigin src="./assets/index-5YwoUC8N.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BXn3ufaT.css">
   </head>
   <body>
     <header class="topbar">
@@ -48,6 +48,19 @@
           <span data-icon="gear"></span>
           <span>Settings</span>
         </button>
+      </div>
+      <!-- While following directions: the next step, under the top bar so it stays in view. -->
+      <div class="nav-banner" id="navBanner" hidden>
+        <div class="nav-banner-inner">
+          <span id="navIcon"></span>
+          <div class="nav-words">
+            <p class="nav-main" id="navMain"></p>
+            <p class="nav-then" id="navThen"></p>
+          </div>
+          <button type="button" class="btn accent small-btn" id="navReplan" hidden>Re-plan from Here</button>
+          <button type="button" class="btn ghost small-btn" id="navEnd">End</button>
+        </div>
+        <p class="sr-only" id="navAnnounce" role="status"></p>
       </div>
     </header>
 
