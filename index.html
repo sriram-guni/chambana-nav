@@ -26,8 +26,8 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
     />
-    <script type="module" crossorigin src="./assets/index-De36TMo8.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-zNj32Tx_.css">
+    <script type="module" crossorigin src="./assets/index-hX5UD_1j.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DgLHhuz8.css">
   </head>
   <body>
     <header class="topbar">
@@ -357,6 +357,25 @@
       </div>
       <div class="dialog-body">
         <section class="tab-panel" id="settings-travel" role="tabpanel" aria-labelledby="tab-travel" tabindex="0">
+          <fieldset>
+            <legend id="autoSavingLabel">Auto: Time It Must Save</legend>
+            <div class="range-row">
+              <input type="range" id="autoSavingRange" aria-labelledby="autoSavingLabel" aria-describedby="autoSavingHint" />
+              <output id="autoSavingValue" for="autoSavingRange"></output>
+            </div>
+            <p class="hint" id="autoSavingHint">
+              Auto picks the quickest way for each class but prefers walking: it takes the bus (or your bike or car)
+              only when that lets you leave at least this much later.
+            </p>
+          </fieldset>
+          <fieldset>
+            <legend>Auto: I Have a Bike on Campus</legend>
+            <div class="seg" id="autoBikeChoices"></div>
+          </fieldset>
+          <fieldset>
+            <legend>Auto: I Have a Car</legend>
+            <div class="seg" id="autoCarChoices"></div>
+          </fieldset>
           <fieldset>
             <legend>Walking Pace</legend>
             <div class="seg" id="paceChoices"></div>
