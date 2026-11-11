@@ -26,8 +26,8 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
     />
-    <script type="module" crossorigin src="./assets/index-UavuUV6o.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-CeK8yRCB.css">
+    <script type="module" crossorigin src="./assets/index-skCU46mb.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-XGQtIXWF.css">
   </head>
   <body>
     <header class="topbar">
@@ -260,7 +260,13 @@
             <button type="button" class="link-btn" id="undoBtn">Undo</button>
           </div>
           <ul class="class-list" id="classList"></ul>
-          <button type="button" class="btn ghost small-btn calendar-btn" id="calendarFromClasses" aria-haspopup="dialog">Download Calendar (.ics)</button>
+          <div id="classExports">
+            <div class="list-actions export-actions">
+              <button type="button" class="btn ghost small-btn" id="calendarFromClasses" aria-haspopup="dialog">Download Calendar (.ics)</button>
+              <button type="button" class="btn ghost small-btn" id="pdfFromClasses">Download PDF</button>
+            </div>
+            <p id="pdfMessageClasses" role="status" hidden></p>
+          </div>
 
         </div>
         <div id="classesImportView" hidden>
@@ -559,14 +565,16 @@
             </div>
           </fieldset>
           <fieldset>
-            <legend>Calendar</legend>
+            <legend>Calendar and PDF</legend>
             <p class="hint">
-              Download your classes as a calendar file (.ics) for Google Calendar, Apple Calendar, or Outlook, with a
-              reminder before each class if you like.
+              Download your classes as a calendar file (.ics) for Google Calendar, Apple Calendar, or Outlook, with
+              reminders before each class if you like, or as a PDF of your week to print or keep.
             </p>
-            <div class="row">
+            <div class="row export-row">
               <button type="button" class="btn ghost" id="calendarFromSettings" aria-haspopup="dialog">Download Calendar (.ics)</button>
+              <button type="button" class="btn ghost" id="pdfFromSettings">Download PDF</button>
             </div>
+            <p id="pdfMessageSettings" role="status" hidden></p>
           </fieldset>
           <fieldset class="reset-field">
             <legend>Reset</legend>
