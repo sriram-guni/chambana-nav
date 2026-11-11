@@ -1,4 +1,4 @@
-// Illini Wayfinder's service worker. For now it only lets reminders show as system notifications
+// Chambana Nav's service worker. For now it only lets reminders show as system notifications
 // (Chrome on Android shows them only through a service worker) and brings the app forward when one
 // is tapped. It doesn't cache anything, so the app loads exactly as it would without it.
 

@@ -1,7 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Illini Wayfinder">
-  <!-- Illini Wayfinder logo: a navy map pin with an orange outline holding a solid orange serif "I".
-       A plain letterform in Illinois colors, not a copy of the university's Block I mark. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Chambana Nav">
+  <!-- Chambana Nav logo: a navy map pin with an orange outline holding a solid orange slab-serif "C"
+       (for Champaign-Urbana), drawn to match the weight and serifs of the earlier "I". -->
   <path d="M32 3C17.6 3 6 14.3 6 28.4 6 46.2 32 61 32 61s26-14.8 26-32.6C58 14.3 46.4 3 32 3z"
         fill="#13294B" stroke="#FF5F05" stroke-width="3" stroke-linejoin="round"/>
-  <path d="M21 13h22v6h-7v18h7v6H21v-6h7V19h-7z" fill="#FF5F05"/>
+  <path d="M41.6 20.6A12.6 12.6 0 1 0 41.6 35.4" fill="none" stroke="#FF5F05" stroke-width="7"/>
+  <path d="M38.6 13.2h6.6v10.4h-6.6zM38.6 32.4h6.6v10.4h-6.6z" fill="#FF5F05"/>
 </svg>
