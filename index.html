@@ -26,8 +26,8 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
     />
-    <script type="module" crossorigin src="./assets/index-B2eMOyGd.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-CQIh2cjc.css">
+    <script type="module" crossorigin src="./assets/index-_zIEZBwz.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-zNj32Tx_.css">
   </head>
   <body>
     <header class="topbar">
@@ -64,6 +64,7 @@
       </div>
     </header>
 
+    <div class="hazard-banner" id="reminderBanner" role="region" aria-label="Reminder" aria-live="assertive" hidden></div>
     <div class="hazard-banner" id="hazardBanner" role="region" aria-label="Weather warnings" aria-live="polite" hidden></div>
 
     <main class="layout">
@@ -405,6 +406,29 @@
             <legend>Extra Time Before Class</legend>
             <div class="seg" id="extraChoices"></div>
             <p class="hint" id="extraHint"></p>
+          </fieldset>
+          <fieldset>
+            <legend>Reminders</legend>
+            <div class="seg" id="remindersChoices"></div>
+            <p class="hint">
+              A banner in the app before your leave time and again when it's time to leave, and a notification when the
+              app isn't on screen. Only while the app is open: a locked phone, or the browser in the background, won't get them.
+            </p>
+            <p class="hint" id="remindersStatus" role="status"></p>
+            <div class="reminder-buttons">
+              <button type="button" class="btn ghost" id="allowNotifications" hidden>Allow Notifications</button>
+              <button type="button" class="btn ghost" id="testReminder">Test Reminder</button>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Early Reminder</legend>
+            <div class="seg" id="reminderMinutesChoices"></div>
+            <p class="hint" id="reminderMinutesHint"></p>
+          </fieldset>
+          <fieldset>
+            <legend>Reminder Chime</legend>
+            <div class="seg" id="reminderChimeChoices"></div>
+            <p class="hint">A short chime when a reminder appears; phones that allow it also buzz.</p>
           </fieldset>
           <fieldset>
             <legend>Your Places</legend>
