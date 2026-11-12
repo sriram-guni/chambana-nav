@@ -26,8 +26,8 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
     />
-    <script type="module" crossorigin src="./assets/index-B2HNQ4Nb.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-CYdWbi1w.css">
+    <script type="module" crossorigin src="./assets/index-CqUtpOeZ.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-10yR2kd0.css">
   </head>
   <body>
     <header class="topbar">
@@ -587,7 +587,13 @@
               </form>
             </div>
             <div id="accountSignedIn" hidden>
-              <p class="account-who">Signed in as <strong id="accountEmail"></strong></p>
+              <div class="account-profile">
+                <span class="account-avatar" id="accountAvatar" aria-hidden="true"></span>
+                <div class="account-names">
+                  <p class="account-name" id="accountName"></p>
+                  <p class="account-who"><span class="sr-only">Signed in as </span><span id="accountEmail"></span></p>
+                </div>
+              </div>
               <p class="hint" id="syncStatus" role="status" aria-live="polite"></p>
               <p class="hint" id="confirmNote" hidden>
                 We sent an email to confirm your address; syncing works without it.
