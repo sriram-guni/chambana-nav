@@ -26,8 +26,8 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
     />
-    <script type="module" crossorigin src="./assets/index-CqUtpOeZ.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-10yR2kd0.css">
+    <script type="module" crossorigin src="./assets/index-CSV3mOOC.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BkaJLBSw.css">
   </head>
   <body>
     <header class="topbar">
@@ -136,6 +136,7 @@
         <div id="map" class="map" role="region" aria-label="Campus map"></div>
         <div class="map-foot">
           <p class="hint" id="mapCaption"></p>
+          <button type="button" class="link-btn" id="openFeedback" aria-haspopup="dialog">Send Feedback</button>
           <button type="button" class="link-btn" id="openCredits" aria-haspopup="dialog">Credits</button>
         </div>
       </section>
@@ -234,6 +235,32 @@
         <p class="hint">
           The other set is replaced on every device. Closing this cancels signing in and changes nothing.
         </p>
+      </div>
+    </dialog>
+
+    <dialog class="settings-dialog small-dialog" id="feedbackDialog" aria-labelledby="feedbackTitle">
+      <div class="dialog-head">
+        <h2 id="feedbackTitle">Send Feedback</h2>
+        <button type="button" class="dialog-close" id="closeFeedback" aria-label="Close feedback">&times;</button>
+      </div>
+      <div class="dialog-body">
+        <form class="feedback-form" id="feedbackForm" novalidate>
+          <fieldset>
+            <legend class="field-label">What Kind?</legend>
+            <div class="seg" id="feedbackKinds"></div>
+          </fieldset>
+          <label class="field-label" for="feedbackMessage">Message</label>
+          <textarea id="feedbackMessage" rows="5" placeholder="What happened, or what would you change?"></textarea>
+          <p class="hint feedback-count" id="feedbackCount" aria-live="polite"></p>
+          <label class="field-label" for="feedbackContact">Your Email (Optional, for a Reply)</label>
+          <input type="email" id="feedbackContact" autocomplete="email" inputmode="email" spellcheck="false" />
+          <p class="hint">
+            Sent along with it: the app's version, your screen size and browser, and how many classes and which travel
+            mode you have. Never your classes, places, or location.
+          </p>
+          <button type="submit" class="btn accent" id="feedbackSend">Send Feedback</button>
+          <p id="feedbackMessageStatus" role="status" hidden></p>
+        </form>
       </div>
     </dialog>
 
