@@ -26,8 +26,8 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
     />
-    <script type="module" crossorigin src="./assets/index-CB0RG5GA.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-Crigx0KH.css">
+    <script type="module" crossorigin src="./assets/index-mO2e2Kek.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-0EYWKLDv.css">
   </head>
   <body>
     <header class="topbar">
@@ -566,11 +566,44 @@
                 Sign in to keep your classes, settings, and places the same on your phone and laptop. Without signing
                 in, everything stays only in this browser.
               </p>
-              <button type="button" class="btn ghost" id="signInGoogle">Sign In with Google</button>
+              <div class="account-options">
+                <button type="button" class="btn ghost" id="signInGoogle">Sign In with Google</button>
+                <button type="button" class="btn ghost" id="signInGithub">Sign In with GitHub</button>
+                <button type="button" class="btn ghost" id="signInEmail" aria-expanded="false" aria-controls="emailForm">
+                  Sign In with Email
+                </button>
+              </div>
+              <form class="email-form" id="emailForm" novalidate hidden>
+                <label class="field-label" for="accountEmailInput">Email</label>
+                <input type="email" id="accountEmailInput" autocomplete="email" inputmode="email" spellcheck="false" />
+                <label class="field-label" for="accountPasswordInput">Password</label>
+                <input type="password" id="accountPasswordInput" autocomplete="current-password" />
+                <p class="hint">New accounts need at least 8 characters.</p>
+                <div class="row account-buttons">
+                  <button type="submit" class="btn accent" id="emailSignIn">Sign In</button>
+                  <button type="button" class="btn ghost" id="emailCreate">Create Account</button>
+                </div>
+                <button type="button" class="link-btn" id="forgotPassword">Forgot Password?</button>
+              </form>
             </div>
             <div id="accountSignedIn" hidden>
               <p class="account-who">Signed in as <strong id="accountEmail"></strong></p>
               <p class="hint" id="syncStatus" role="status" aria-live="polite"></p>
+              <p class="hint" id="confirmNote" hidden>
+                We sent an email to confirm your address; syncing works without it.
+                <button type="button" class="link-btn" id="resendConfirm">Send Again</button>
+              </p>
+              <p class="field-label account-methods-label">Ways to Sign In</p>
+              <ul class="account-methods" id="accountMethods"></ul>
+              <form class="email-form" id="addPasswordForm" novalidate hidden>
+                <label class="field-label" for="newPasswordInput">New Password</label>
+                <input type="password" id="newPasswordInput" autocomplete="new-password" />
+                <p class="hint">At least 8 characters. Then you can sign in with your email and this password too.</p>
+                <div class="row account-buttons">
+                  <button type="submit" class="btn accent">Add Password</button>
+                  <button type="button" class="btn ghost" id="cancelAddPassword">Cancel</button>
+                </div>
+              </form>
               <div class="row account-buttons">
                 <button type="button" class="btn ghost" id="syncRetry" hidden>Try Again</button>
                 <button type="button" class="btn ghost" id="signOut">Sign Out</button>
