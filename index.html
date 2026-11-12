@@ -26,8 +26,8 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
     />
-    <script type="module" crossorigin src="./assets/index-qdSYTCTb.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-BKoXsaed.css">
+    <script type="module" crossorigin src="./assets/index-DSXM7C9b.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-Crigx0KH.css">
   </head>
   <body>
     <header class="topbar">
@@ -217,6 +217,23 @@
           <button type="submit" class="btn accent" id="calendarDownload">Download</button>
           <p id="calendarMessage" role="status" hidden></p>
         </form>
+      </div>
+    </dialog>
+
+    <dialog class="settings-dialog small-dialog" id="syncChoiceDialog" aria-labelledby="syncChoiceTitle">
+      <div class="dialog-head">
+        <h2 id="syncChoiceTitle">Which Classes to Keep?</h2>
+        <button type="button" class="dialog-close" id="closeSyncChoice" aria-label="Cancel signing in">&times;</button>
+      </div>
+      <div class="dialog-body sync-choice">
+        <p id="syncChoiceText"></p>
+        <div class="sync-choice-buttons">
+          <button type="button" class="btn accent" id="useAccountData"></button>
+          <button type="button" class="btn ghost" id="useDeviceData"></button>
+        </div>
+        <p class="hint">
+          The other set is replaced on every device. Closing this cancels signing in and changes nothing.
+        </p>
       </div>
     </dialog>
 
@@ -542,11 +559,30 @@
           </fieldset>
         </section>
         <section class="tab-panel" id="settings-data" role="tabpanel" aria-labelledby="tab-data" tabindex="0">
+          <fieldset class="account-field">
+            <legend>Account</legend>
+            <div id="accountSignedOut">
+              <p class="hint">
+                Sign in to keep your classes, settings, and places the same on your phone and laptop. Without signing
+                in, everything stays only in this browser.
+              </p>
+              <button type="button" class="btn ghost" id="signInGoogle">Sign In with Google</button>
+            </div>
+            <div id="accountSignedIn" hidden>
+              <p class="account-who">Signed in as <strong id="accountEmail"></strong></p>
+              <p class="hint" id="syncStatus" role="status" aria-live="polite"></p>
+              <div class="row account-buttons">
+                <button type="button" class="btn ghost" id="syncRetry" hidden>Try Again</button>
+                <button type="button" class="btn ghost" id="signOut">Sign Out</button>
+              </div>
+            </div>
+            <p id="accountMessage" role="status" hidden></p>
+          </fieldset>
           <fieldset>
             <legend>Backup</legend>
             <p class="hint backup-hint">
-              Your schedule and settings are saved only in this browser. Download a backup to move them to another
-              computer, or to get them back if this browser's data is cleared.
+              Your schedule and settings are saved in this browser (and in your account, if you're signed in). Download
+              a backup to keep a copy of your own, or to get them back if this browser's data is cleared.
             </p>
             <div class="row">
               <button type="button" class="btn ghost" id="backupDownload">Download Backup</button>
