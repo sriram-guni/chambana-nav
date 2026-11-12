@@ -26,8 +26,8 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
     />
-    <script type="module" crossorigin src="./assets/index-mO2e2Kek.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-0EYWKLDv.css">
+    <script type="module" crossorigin src="./assets/index-B2HNQ4Nb.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CYdWbi1w.css">
   </head>
   <body>
     <header class="topbar">
@@ -607,6 +607,17 @@
               <div class="row account-buttons">
                 <button type="button" class="btn ghost" id="syncRetry" hidden>Try Again</button>
                 <button type="button" class="btn ghost" id="signOut">Sign Out</button>
+              </div>
+              <button type="button" class="btn ghost danger delete-account-btn" id="deleteAccount">Delete My Account</button>
+              <div class="confirm-box danger-box" id="deleteAccountConfirm" role="alertdialog" aria-labelledby="deleteAccountText" hidden>
+                <p id="deleteAccountText"></p>
+                <div class="delete-options" id="deleteOptions"></div>
+                <div class="email-form" id="deletePasswordField" hidden>
+                  <label class="field-label" for="deletePasswordInput">Your Password</label>
+                  <input type="password" id="deletePasswordInput" autocomplete="current-password" />
+                  <button type="button" class="btn danger solid" id="deleteWithPassword">Confirm with Password and Delete</button>
+                </div>
+                <button type="button" class="btn ghost delete-cancel" id="deleteAccountCancel">Cancel</button>
               </div>
             </div>
             <p id="accountMessage" role="status" hidden></p>
