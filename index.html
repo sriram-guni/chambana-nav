@@ -26,7 +26,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
     />
-    <script type="module" crossorigin src="./assets/index-CSV3mOOC.js"></script>
+    <script type="module" crossorigin src="./assets/index-DyHA60AZ.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-BkaJLBSw.css">
   </head>
   <body>
@@ -528,6 +528,20 @@
             <legend>Reminder Chime</legend>
             <div class="seg" id="reminderChimeChoices"></div>
             <p class="hint">A short chime when a reminder appears; phones that allow it also buzz.</p>
+          </fieldset>
+          <fieldset class="push-field">
+            <legend>Push Notifications</legend>
+            <p class="hint">
+              Reminders before each class starts, even when the app is closed and the phone is locked, sent by Chambana
+              Nav's server. They know your classes, but not your live leave time. Needs you signed in; class changes reach
+              them within about 15 minutes.
+            </p>
+            <p class="hint" id="pushStatus" role="status"></p>
+            <div class="reminder-buttons">
+              <button type="button" class="btn ghost" id="pushOn" hidden>Turn On for This Phone</button>
+              <button type="button" class="btn ghost" id="pushOff" hidden>Turn Off for This Phone</button>
+            </div>
+            <div class="calendar-reminder-list" id="pushMinutesChoices" aria-label="When to send push notifications"></div>
           </fieldset>
           <fieldset>
             <legend>Your Places</legend>
