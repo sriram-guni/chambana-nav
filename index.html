@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#13294B" />
+    <meta name="theme-color" content="#1d1913" />
     <link rel="icon" type="image/svg+xml" href="./logo.svg" />
     <link rel="apple-touch-icon" href="./logo.svg" />
     <title>Chambana Nav</title>
@@ -19,35 +19,28 @@
       } catch {
         // Storage can be blocked; the app falls back to the default theme.
       }
-    </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap"
-    />
-    <script type="module" crossorigin src="./assets/index-BqiTQdYu.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-DBmdSz11.css">
+    </script>
+    <script type="module" crossorigin src="./assets/index-BHgVOCik.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BflqZbjd.css">
   </head>
-  <body>
+  <body data-view="today">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <nav class="appnav" aria-label="Main">
+      <span class="appnav-mark" aria-hidden="true"><img src="./logo.svg" alt="" width="32" height="32" /></span>
+      <button type="button" class="appnav-item" id="navToday"><span data-icon="clock"></span><span>Today</span></button>
+      <button type="button" class="appnav-item" id="openClasses"><span data-icon="calendar"></span><span>Classes</span></button>
+      <button type="button" class="appnav-item" id="openSettings"><span data-icon="gear"></span><span>Settings</span></button>
+    </nav>
+
     <header class="topbar">
       <div class="topbar-inner">
-        <img class="brand-mark" src="./logo.svg" alt="" width="40" height="40" />
-        <div class="brand-text">
-          <h1>Chambana Nav</h1>
-        </div>
-        <div class="topbar-time">
-          <time class="topbar-clock" id="clock"></time>
-          <span class="topbar-next" id="nextClass" hidden></span>
-        </div>
-        <button type="button" class="settings-btn" id="openClasses" aria-haspopup="dialog">
-          <span data-icon="calendar"></span>
-          <span>Classes</span>
-        </button>
-        <button type="button" class="settings-btn" id="openSettings" aria-haspopup="dialog">
-          <span data-icon="gear"></span>
-          <span>Settings</span>
-        </button>
+        <span class="brand">
+          <img class="brand-mark" src="./logo.svg" alt="" width="28" height="28" />
+          <span class="brand-name">Chambana Nav</span>
+        </span>
+        <!-- The next class's countdown to its start, and when it starts: "CS 124 starts in [34m][29s] · Today 5:01 PM". -->
+        <p class="topbar-next" id="nextClass" hidden></p>
       </div>
       <!-- While following directions: the next step, under the top bar so it stays in view. -->
       <div class="nav-banner" id="navBanner" hidden>
@@ -64,242 +57,104 @@
       </div>
     </header>
 
-    <div class="hazard-banner" id="reminderBanner" role="region" aria-label="Reminder" aria-live="assertive" hidden></div>
-    <div class="hazard-banner" id="hazardBanner" role="region" aria-label="Weather warnings" aria-live="polite" hidden></div>
+    <main id="main" class="main">
+      <div class="banners">
+        <div class="hazard-banner" id="reminderBanner" role="region" aria-label="Reminder" aria-live="assertive" hidden></div>
+        <div class="hazard-banner" id="hazardBanner" role="region" aria-label="Weather warnings" aria-live="polite" hidden></div>
+      </div>
 
-    <main class="layout">
-      <div class="column">
-        <section id="status" class="status" aria-label="Next class"></section>
+      <!-- ===== Today: the next class, how you're getting there, and the map ===== -->
+      <div class="view today" id="todayView">
+        <h1 class="sr-only" tabindex="-1">Today</h1>
+        <div class="today-panel">
+          <section id="status" class="status" aria-label="Next class"></section>
 
-        <section class="trip-controls" aria-label="Where you are and how you're getting there">
-          <label for="startBuilding" class="section-label">From</label>
-          <div class="from-row">
-            <!-- The picker can't wrap a long name, so its whole name is shown in the box under it,
-                 and the picker itself sits on top, invisible, to open the usual list when tapped. -->
-            <div class="from-picker">
-              <span class="from-picker-name" id="startBuildingName" aria-hidden="true"></span>
-              <select id="startBuilding"></select>
+
+          <section class="trip-controls" aria-label="Where you're starting and how you're getting there">
+            <div class="from-field">
+              <label for="startBuilding" class="field-label">From</label>
+              <!-- The picker can't wrap a long name, so its whole name is shown in the box under it,
+                   and the picker itself sits on top, invisible, to open the usual list when tapped. -->
+              <div class="from-picker">
+                <span class="from-picker-name" id="startBuildingName" aria-hidden="true"></span>
+                <select id="startBuilding"></select>
+              </div>
             </div>
-            <button type="button" class="icon-btn gps-btn" id="gpsButton" aria-pressed="false" title="Use My Location">
-              <span data-icon="locate"></span><span class="btn-text sr-only">My Location</span>
+            <div class="from-actions" role="group" aria-label="Set where you're starting">
+              <button type="button" class="tool-btn gps-btn" id="gpsButton" aria-pressed="false" title="Use My Location">
+                <span data-icon="locate"></span><span class="btn-text">My Location</span>
+              </button>
+              <button type="button" class="tool-btn" id="pickOnMap" title="Pick on Map">
+                <span data-icon="pin"></span><span>Pick on Map</span>
+              </button>
+              <button type="button" class="tool-btn" id="homeButton">
+                <span data-icon="home"></span><span>Home</span>
+              </button>
+              <button type="button" class="tool-btn" id="openSaveSpot" title="Save This Pinned Spot" aria-haspopup="dialog" hidden>
+                <span data-icon="bookmark"></span><span>Save Spot</span>
+              </button>
+            </div>
+            <p class="form-ok" id="placeStatus" role="status" hidden></p>
+            <p id="gpsStatus" role="status" hidden></p>
+            <fieldset class="mode-field">
+              <legend class="field-label">Getting There</legend>
+              <div class="seg mode-seg" id="modeChoices"></div>
+            </fieldset>
+            <button type="button" class="tool-btn stops-btn" id="openStops" aria-haspopup="dialog" hidden>
+              <span data-icon="flag"></span><span>Stops on the Way</span><span class="stop-count" id="stopCount" aria-hidden="true" hidden></span>
             </button>
-            <button type="button" class="icon-btn" id="pickOnMap" title="Pick on Map">
-              <span data-icon="pin"></span><span class="sr-only">Pick on Map</span>
-            </button>
-            <button type="button" class="icon-btn" id="homeButton" aria-label="Home">
-              <span data-icon="home"></span>
-            </button>
-            <!-- Stops on the way to the next class, in a popup; the number shows how many. -->
-            <button type="button" class="icon-btn stops-btn" id="openStops" aria-haspopup="dialog" hidden>
-              <span data-icon="flag"></span><span class="stop-count" id="stopCount" aria-hidden="true" hidden></span>
-            </button>
-            <button type="button" class="icon-btn" id="openSaveSpot" title="Save This Pinned Spot" aria-haspopup="dialog" hidden>
-              <span data-icon="bookmark"></span><span class="sr-only">Save This Pinned Spot</span>
-            </button>
+          </section>
+
+          <!-- After From and mode on a phone; moved up under the card on a laptop (style.css). -->
+          <section class="day-strip" id="dayStrip" aria-label="Today's classes" hidden></section>
+        </div>
+
+        <section class="map-section" aria-label="Map">
+          <div class="search">
+            <label for="buildingSearch" class="sr-only">Find a Building, Place, or Address</label>
+            <span class="search-icon" data-icon="pin" aria-hidden="true"></span>
+            <input
+              type="search"
+              id="buildingSearch"
+              placeholder="Find a building, place, or address"
+              autocomplete="off"
+              role="combobox"
+              aria-autocomplete="list"
+              aria-expanded="false"
+              aria-controls="buildingResults"
+            />
+            <ul id="buildingResults" class="search-results" role="listbox" aria-label="Matching buildings" hidden></ul>
           </div>
-          <p class="form-ok" id="placeStatus" role="status" hidden></p>
-          <p id="gpsStatus" role="status" hidden></p>
-          <fieldset class="mode-field">
-            <legend class="sr-only">How are you getting there?</legend>
-            <div class="seg" id="modeChoices"></div>
-          </fieldset>
+          <div class="explore-bar" id="exploreBar" hidden>
+            <span data-icon="pin" class="icon bar-icon"></span>
+            <span class="bar-text" id="exploreText"></span>
+            <div class="bar-actions">
+              <button type="button" class="btn accent small-btn" id="exploreHere">I'm Here</button>
+              <button type="button" class="btn ghost small-btn" id="exploreSave">Save</button>
+              <button type="button" class="link-btn" id="exploreBack">Back to Next Class</button>
+            </div>
+          </div>
+          <div class="pick-bar" id="pickBar" role="status" hidden>
+            <span data-icon="locate" class="icon bar-icon"></span>
+            <span class="bar-text" id="pickText"></span>
+            <button type="button" class="link-btn" id="pickCancel">Cancel</button>
+          </div>
+          <div class="map-frame">
+            <div id="map" class="map" role="region" aria-label="Campus map"></div>
+            <p class="map-caption" id="mapCaption" role="status"></p>
+          </div>
         </section>
       </div>
 
-      <section class="map-section" aria-label="Map">
-        <div class="search">
-          <label for="buildingSearch" class="sr-only">Find a Building, Place, or Address</label>
-          <input
-            type="search"
-            id="buildingSearch"
-            placeholder="Find a building, place, or address (try ECEB, Seven07)"
-            autocomplete="off"
-            role="combobox"
-            aria-autocomplete="list"
-            aria-expanded="false"
-            aria-controls="buildingResults"
-          />
-          <ul id="buildingResults" class="search-results" role="listbox" aria-label="Matching buildings" hidden></ul>
+      <!-- ===== Classes ===== -->
+      <div class="view page" id="classesView" hidden>
+        <div class="page-head">
+          <h1 tabindex="-1">Classes</h1>
         </div>
-        <div class="explore-bar" id="exploreBar" hidden>
-          <span data-icon="pin" class="icon bar-icon"></span>
-          <span id="exploreText"></span>
-          <button type="button" class="btn accent small-btn" id="exploreHere">I'm Here</button>
-          <button type="button" class="btn ghost small-btn" id="exploreSave">Save</button>
-          <button type="button" class="link-btn" id="exploreBack">Back to Next Class</button>
-        </div>
-        <div class="pick-bar" id="pickBar" role="status" hidden>
-          <span data-icon="locate" class="icon bar-icon"></span>
-          <span id="pickText"></span>
-          <button type="button" class="link-btn" id="pickCancel">Cancel</button>
-        </div>
-        <div id="map" class="map" role="region" aria-label="Campus map"></div>
-        <div class="map-foot">
-          <p class="hint" id="mapCaption"></p>
-          <button type="button" class="link-btn" id="openFeedback" aria-haspopup="dialog">Send Feedback</button>
-          <button type="button" class="link-btn" id="openCredits" aria-haspopup="dialog">Credits</button>
-        </div>
-      </section>
-    </main>
-
-    <dialog class="settings-dialog small-dialog" id="tripDetailsDialog" aria-labelledby="tripDetailsTitle">
-      <div class="dialog-head">
-        <h2 id="tripDetailsTitle">Trip Details</h2>
-        <button type="button" class="dialog-close" id="closeTripDetails" aria-label="Close trip details">&times;</button>
-      </div>
-      <div class="dialog-body trip-details" id="tripDetailsBody"></div>
-    </dialog>
-
-    <dialog class="settings-dialog small-dialog" id="directionsDialog" aria-labelledby="directionsTitle">
-      <div class="dialog-head">
-        <h2 id="directionsTitle">Directions</h2>
-        <button type="button" class="dialog-close" id="closeDirections" aria-label="Close directions">&times;</button>
-      </div>
-      <div class="dialog-body" id="directionsBody"></div>
-    </dialog>
-
-    <dialog class="settings-dialog small-dialog" id="stopsDialog" aria-labelledby="stopHeading">
-      <div class="dialog-head">
-        <h2 id="stopHeading">Stops on the Way</h2>
-        <button type="button" class="dialog-close" id="closeStops" aria-label="Close stops">&times;</button>
-      </div>
-      <div class="dialog-body">
-        <div class="stop-scope" role="group" aria-label="What changes apply to">
-          <button type="button" class="stop-scope-btn" id="stopScopeEvery" aria-pressed="true">Every Time</button>
-          <button type="button" class="stop-scope-btn" id="stopScopeTrip" aria-pressed="false">This Trip Only</button>
-        </div>
-        <p class="hint stop-hint" id="stopScopeHint"></p>
-        <div id="stopEditor"></div>
-      </div>
-    </dialog>
-
-    <dialog class="settings-dialog small-dialog" id="saveSpotDialog" aria-labelledby="saveSpotTitle">
-      <div class="dialog-head">
-        <h2 id="saveSpotTitle">Save This Pinned Spot</h2>
-        <button type="button" class="dialog-close" id="closeSaveSpot" aria-label="Close">&times;</button>
-      </div>
-      <div class="dialog-body">
-        <form class="save-spot" id="saveSpot">
-          <label for="spotName">Name</label>
-          <div class="row">
-            <input type="text" id="spotName" placeholder="e.g. My apartment" autocomplete="off" />
-            <button type="submit" class="btn ghost save-btn">Save</button>
-          </div>
-          <button type="button" class="link-btn" id="saveSpotHome">Set as Home Instead</button>
-          <p id="saveSpotMessage" role="status" hidden></p>
-          <p class="hint">Drag the blue dot on the map to fine-tune the spot.</p>
-        </form>
-      </div>
-    </dialog>
-
-    <dialog class="settings-dialog small-dialog" id="calendarDialog" aria-labelledby="calendarTitle">
-      <div class="dialog-head">
-        <h2 id="calendarTitle">Add Classes to Your Calendar</h2>
-        <button type="button" class="dialog-close" id="closeCalendar" aria-label="Close">&times;</button>
-      </div>
-      <div class="dialog-body">
-        <form class="calendar-export" id="calendarForm" novalidate>
-          <p class="hint">
-            Downloads your classes as a calendar file (.ics) to open in Google Calendar, Apple Calendar, or Outlook. It's
-            a copy: after changing your classes, download it again.
-          </p>
-          <fieldset class="field calendar-reminders" aria-describedby="calendarReminderHint">
-            <legend class="field-label">Reminders Before Each Class</legend>
-            <div class="calendar-reminder-list" id="calendarReminders"></div>
-            <p class="hint" id="calendarReminderHint">
-              Tick as many as you like, or none. Some calendar apps may use their own notification settings instead.
-            </p>
-          </fieldset>
-          <div class="field" id="calendarRepeatField" hidden>
-            <label class="field-label" for="calendarRepeatUntil">Repeat Until (Optional)</label>
-            <input type="date" id="calendarRepeatUntil" aria-describedby="calendarRepeatHint" />
-            <p class="hint" id="calendarRepeatHint"></p>
-          </div>
-          <button type="submit" class="btn accent" id="calendarDownload">Download</button>
-          <p id="calendarMessage" role="status" hidden></p>
-        </form>
-      </div>
-    </dialog>
-
-    <dialog class="settings-dialog small-dialog" id="syncChoiceDialog" aria-labelledby="syncChoiceTitle">
-      <div class="dialog-head">
-        <h2 id="syncChoiceTitle">Which Classes to Keep?</h2>
-        <button type="button" class="dialog-close" id="closeSyncChoice" aria-label="Cancel signing in">&times;</button>
-      </div>
-      <div class="dialog-body sync-choice">
-        <p id="syncChoiceText"></p>
-        <div class="sync-choice-buttons">
-          <button type="button" class="btn accent" id="useAccountData"></button>
-          <button type="button" class="btn ghost" id="useDeviceData"></button>
-        </div>
-        <p class="hint">
-          The other set is replaced on every device. Closing this cancels signing in and changes nothing.
-        </p>
-      </div>
-    </dialog>
-
-    <dialog class="settings-dialog small-dialog" id="feedbackDialog" aria-labelledby="feedbackTitle">
-      <div class="dialog-head">
-        <h2 id="feedbackTitle">Send Feedback</h2>
-        <button type="button" class="dialog-close" id="closeFeedback" aria-label="Close feedback">&times;</button>
-      </div>
-      <div class="dialog-body">
-        <form class="feedback-form" id="feedbackForm" novalidate>
-          <fieldset>
-            <legend class="field-label">What Kind?</legend>
-            <div class="seg" id="feedbackKinds"></div>
-          </fieldset>
-          <label class="field-label" for="feedbackMessage">Message</label>
-          <textarea id="feedbackMessage" rows="5" placeholder="What happened, or what would you change?"></textarea>
-          <p class="hint feedback-count" id="feedbackCount" aria-live="polite"></p>
-          <label class="field-label" for="feedbackContact">Your Email (Optional, for a Reply)</label>
-          <input type="email" id="feedbackContact" autocomplete="email" inputmode="email" spellcheck="false" />
-          <p class="hint">
-            Sent along with it: the app's version, your screen size and browser, and how many classes and which travel
-            mode you have. Never your classes, places, or location.
-          </p>
-          <button type="submit" class="btn accent" id="feedbackSend">Send Feedback</button>
-          <p id="feedbackMessageStatus" role="status" hidden></p>
-        </form>
-      </div>
-    </dialog>
-
-    <dialog class="settings-dialog small-dialog" id="creditsDialog" aria-labelledby="creditsTitle">
-      <div class="dialog-head">
-        <h2 id="creditsTitle">Credits</h2>
-        <button type="button" class="dialog-close" id="closeCredits" aria-label="Close credits">&times;</button>
-      </div>
-      <div class="dialog-body credits">
-        <p>
-          Map, building locations, paths, roads, and parking © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>;
-          map tiles by <a href="https://openfreemap.org/">OpenFreeMap</a> and <a href="https://openmaptiles.org/">OpenMapTiles</a>.
-        </p>
-        <p>Bus times from the Champaign-Urbana Mass Transit District's published schedule; they don't show live delays.</p>
-        <p>
-          Map search by <a href="https://nominatim.org/">Nominatim</a>: only what you search for is sent to it, and only when you
-          choose Search the Map.
-        </p>
-        <p>
-          Weather forecast by <a href="https://open-meteo.com/">Open-Meteo.com</a> and warnings from the
-          <a href="https://www.weather.gov/">National Weather Service</a>, for campus as a whole (your location is never sent).
-        </p>
-        <p>
-          Your classes, settings, and places are saved in this browser. If you sign in, they're also saved to your
-          account so they stay the same on your other devices; the place you're starting from stays on each device.
-        </p>
-      </div>
-    </dialog>
-
-    <dialog class="settings-dialog classes-dialog" id="classesDialog" aria-labelledby="classesTitle">
-      <div class="dialog-head">
-        <h2 id="classesTitle">Your Classes</h2>
-        <button type="button" class="dialog-close" id="closeClasses" aria-label="Close classes">&times;</button>
-      </div>
-      <div class="dialog-body">
         <div id="classesListView">
           <div class="list-actions">
-            <button type="button" class="btn accent small-btn" id="showAddClass">+ Add Class</button>
-            <button type="button" class="btn ghost small-btn" id="showImport">Import from Banner</button>
+            <button type="button" class="btn accent" id="showAddClass">Add a Class</button>
+            <button type="button" class="btn ghost" id="showImport">Import from Banner</button>
           </div>
           <p class="form-ok" id="classesMessage" role="status" hidden></p>
           <div class="undo" id="undoBar" hidden>
@@ -307,21 +162,23 @@
             <button type="button" class="link-btn" id="undoBtn">Undo</button>
           </div>
           <ul class="class-list" id="classList"></ul>
-          <div id="classExports">
-            <div class="list-actions export-actions">
-              <button type="button" class="btn ghost small-btn" id="calendarFromClasses" aria-haspopup="dialog">Download Calendar (.ics)</button>
-              <button type="button" class="btn ghost small-btn" id="pdfFromClasses">Download PDF</button>
+          <div class="exports" id="classExports">
+            <h2 class="section-title">Take Your Schedule With You</h2>
+            <div class="list-actions">
+              <button type="button" class="btn ghost" id="calendarFromClasses" aria-haspopup="dialog">Download Calendar (.ics)</button>
+              <button type="button" class="btn ghost" id="pdfFromClasses">Download PDF</button>
             </div>
             <p id="pdfMessageClasses" role="status" hidden></p>
           </div>
-
         </div>
+
         <div id="classesImportView" hidden>
-          <button type="button" class="link-btn back-btn" data-back-to-list><span data-icon="back"></span>Your Classes</button>
+          <button type="button" class="link-btn back-btn" data-back-to-list><span data-icon="back"></span>All Classes</button>
           <div class="import-box">
             <h3 tabindex="-1">Import from Banner</h3>
             <p class="hint">
-              Download your schedule from Banner's registration page (.ics), or print it and save as PDF.
+              In Banner's registration page, download your schedule (.ics), or print it and save as PDF. Then choose
+              the file here.
             </p>
             <label class="btn accent file-btn">
               Choose .ics or PDF File
@@ -341,35 +198,29 @@
               </div>
             </div>
           </div>
-
         </div>
+
         <div id="classesFormView" hidden>
-          <button type="button" class="link-btn back-btn" data-back-to-list><span data-icon="back"></span>Your Classes</button>
-          <form id="classForm" novalidate>
+          <button type="button" class="link-btn back-btn" data-back-to-list><span data-icon="back"></span>All Classes</button>
+          <form id="classForm" class="class-form" novalidate>
             <h3 id="formHeading" tabindex="-1">Add a Class</h3>
-            <div class="field">
-              <label for="className">Class Name</label>
-              <input type="text" id="className" placeholder="e.g. CS 124" autocomplete="off" maxlength="60" />
-            </div>
-            <div class="field">
-              <label for="classTitle">Full Course Name <span class="optional">(optional)</span></label>
-              <input
-                type="text"
-                id="classTitle"
-                placeholder="e.g. Intro to Computer Science I"
-                autocomplete="off"
-                maxlength="120"
-              />
-            </div>
-            <div class="field">
-              <label for="classKind">Type <span class="optional">(optional)</span></label>
-              <select id="classKind"></select>
-            </div>
-            <div class="field">
-              <span class="field-label" id="daysLabel">Days</span>
-              <div class="days" id="dayButtons" role="group" aria-labelledby="daysLabel"></div>
-            </div>
-            <div class="row">
+            <div class="form-grid">
+              <div class="field">
+                <label for="className">Class Name</label>
+                <input type="text" id="className" placeholder="e.g. CS 124" autocomplete="off" maxlength="60" />
+              </div>
+              <div class="field">
+                <label for="classKind">Type <span class="optional">(optional)</span></label>
+                <select id="classKind"></select>
+              </div>
+              <div class="field span-2">
+                <label for="classTitle">Full Course Name <span class="optional">(optional)</span></label>
+                <input type="text" id="classTitle" placeholder="e.g. Intro to Computer Science I" autocomplete="off" maxlength="120" />
+              </div>
+              <div class="field span-2">
+                <span class="field-label" id="daysLabel">Days</span>
+                <div class="days" id="dayButtons" role="group" aria-labelledby="daysLabel"></div>
+              </div>
               <div class="field">
                 <label for="startTime">Starts</label>
                 <input type="time" id="startTime" />
@@ -378,45 +229,45 @@
                 <label for="endTime">Ends</label>
                 <input type="time" id="endTime" />
               </div>
-            </div>
-            <div class="field">
-              <label for="classBuilding">Building</label>
-              <select id="classBuilding"></select>
-            </div>
-            <div class="field">
-              <label for="classRoom">Room <span class="optional">(optional)</span></label>
-              <input type="text" id="classRoom" placeholder="e.g. 1404" autocomplete="off" maxlength="20" />
-            </div>
-            <div class="field">
-              <label for="classExtra">Extra Minutes for This Class <span class="optional">(optional)</span></label>
-              <input type="number" id="classExtra" min="0" max="60" step="1" inputmode="numeric" placeholder="0" aria-describedby="classExtraHint" />
-              <p class="hint" id="classExtraHint">
-                For a room that's hard to find, a lecture hall where seats fill up early, or a long walk inside the
-                building. Added on top of the extra time in Settings.
-              </p>
-            </div>
-            <div class="field">
-              <span class="field-label" id="classStopsLabel">Stops on the Way <span class="optional">(optional)</span></span>
-              <div id="classStops" role="group" aria-labelledby="classStopsLabel" aria-describedby="classStopsHint"></div>
-              <p class="hint" id="classStopsHint">
-                Places you stop every time, in order, like coffee before class. The leave time includes getting to each
-                one and the time there. You can change them for a single trip on the front page.
-              </p>
-            </div>
-            <details class="field" id="classDates">
-              <summary>Only meets part of the semester?</summary>
-              <div class="row">
-                <div class="field">
-                  <label for="firstDay">First Day</label>
-                  <input type="date" id="firstDay" />
-                </div>
-                <div class="field">
-                  <label for="lastDay">Last Day</label>
-                  <input type="date" id="lastDay" />
-                </div>
+              <div class="field">
+                <label for="classBuilding">Building</label>
+                <select id="classBuilding"></select>
               </div>
-            </details>
-            <div class="row">
+              <div class="field">
+                <label for="classRoom">Room <span class="optional">(optional)</span></label>
+                <input type="text" id="classRoom" placeholder="e.g. 1404" autocomplete="off" maxlength="20" />
+              </div>
+              <div class="field span-2">
+                <label for="classExtra">Extra Minutes for This Class <span class="optional">(optional)</span></label>
+                <input type="number" id="classExtra" min="0" max="60" step="1" inputmode="numeric" placeholder="0" aria-describedby="classExtraHint" />
+                <p class="hint" id="classExtraHint">
+                  For a room that's hard to find, a hall where seats fill up early, or a long walk inside the building.
+                  Added on top of the extra time in Settings.
+                </p>
+              </div>
+              <div class="field span-2">
+                <span class="field-label" id="classStopsLabel">Stops on the Way <span class="optional">(optional)</span></span>
+                <div id="classStops" role="group" aria-labelledby="classStopsLabel" aria-describedby="classStopsHint"></div>
+                <p class="hint" id="classStopsHint">
+                  Places you stop every time, in order, like coffee before class. The leave time includes getting to each
+                  one and the time there. You can change them for a single trip on the Today page.
+                </p>
+              </div>
+              <details class="field span-2 disclosure" id="classDates">
+                <summary>Only meets part of the semester?</summary>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="firstDay">First Day</label>
+                    <input type="date" id="firstDay" />
+                  </div>
+                  <div class="field">
+                    <label for="lastDay">Last Day</label>
+                    <input type="date" id="lastDay" />
+                  </div>
+                </div>
+              </details>
+            </div>
+            <div class="row form-actions">
               <button type="submit" class="btn accent" id="submitClass">Add Class</button>
               <button type="button" class="btn ghost" id="cancelEdit">Cancel</button>
             </div>
@@ -425,304 +276,510 @@
           </form>
         </div>
       </div>
-    </dialog>
 
-    <dialog class="settings-dialog" id="settingsDialog" aria-labelledby="settingsTitle">
-      <div class="dialog-head">
-        <h2 id="settingsTitle">Settings</h2>
-        <button type="button" class="dialog-close" id="closeSettings" aria-label="Close settings">&times;</button>
-        <div class="tabs" role="tablist" aria-label="Settings sections" id="settingsTabs">
-          <button type="button" role="tab" class="tab" id="tab-travel" aria-controls="settings-travel">Travel</button>
-          <button type="button" role="tab" class="tab" id="tab-weather" aria-controls="settings-weather">Weather</button>
-          <button type="button" role="tab" class="tab" id="tab-look" aria-controls="settings-look">Appearance</button>
-          <button type="button" role="tab" class="tab" id="tab-data" aria-controls="settings-data">Your Data</button>
+      <!-- ===== Settings ===== -->
+      <div class="view page settings" id="settingsView" hidden>
+        <div class="page-head">
+          <h1 tabindex="-1">Settings</h1>
+        </div>
+        <div class="settings-layout">
+          <div class="tabs" role="tablist" aria-label="Settings sections" id="settingsTabs">
+            <button type="button" role="tab" class="tab" id="tab-travel" aria-controls="settings-travel">Getting There</button>
+            <button type="button" role="tab" class="tab" id="tab-reminders" aria-controls="settings-reminders">Reminders</button>
+            <button type="button" role="tab" class="tab" id="tab-places" aria-controls="settings-places">Places</button>
+            <button type="button" role="tab" class="tab" id="tab-weather" aria-controls="settings-weather">Weather</button>
+            <button type="button" role="tab" class="tab" id="tab-look" aria-controls="settings-look">Display</button>
+            <button type="button" role="tab" class="tab" id="tab-data" aria-controls="settings-data">Account &amp; Data</button>
+            <button type="button" role="tab" class="tab" id="tab-about" aria-controls="settings-about">About</button>
+          </div>
+
+          <!-- Getting there: each travel mode's options together, then the extra time every trip gets. -->
+          <section class="tab-panel" id="settings-travel" role="tabpanel" aria-labelledby="tab-travel" tabindex="0">
+            <h2 class="panel-title">Getting There</h2>
+            <p class="panel-intro">Pick the mode on the Today page; these tune how each one is timed.</p>
+
+            <div class="group">
+              <h3 class="group-title"><span data-icon="auto"></span>Auto</h3>
+              <fieldset>
+                <legend id="autoSavingLabel">Time It Must Save</legend>
+                <div class="range-row">
+                  <input type="range" id="autoSavingRange" aria-labelledby="autoSavingLabel" aria-describedby="autoSavingHint" />
+                  <output id="autoSavingValue" for="autoSavingRange"></output>
+                </div>
+                <p class="hint" id="autoSavingHint">
+                  Auto picks the quickest way for each class but prefers walking: it takes the bus (or your bike or car)
+                  only when that lets you leave at least this much later.
+                </p>
+              </fieldset>
+              <fieldset>
+                <legend>I Have a Bike on Campus</legend>
+                <div class="seg" id="autoBikeChoices"></div>
+              </fieldset>
+              <fieldset>
+                <legend>I Have a Car</legend>
+                <div class="seg" id="autoCarChoices"></div>
+              </fieldset>
+            </div>
+
+            <div class="group">
+              <h3 class="group-title"><span data-icon="walk"></span>Walking</h3>
+              <fieldset>
+                <legend>Walking Pace</legend>
+                <div class="seg" id="paceChoices"></div>
+                <p class="hint" id="paceHint"></p>
+              </fieldset>
+            </div>
+
+            <div class="group">
+              <h3 class="group-title"><span data-icon="bike"></span>Biking</h3>
+              <fieldset>
+                <legend>Biking Speed</legend>
+                <div class="seg" id="bikeSpeedChoices"></div>
+                <p class="hint" id="bikeHint"></p>
+              </fieldset>
+            </div>
+
+            <div class="group">
+              <h3 class="group-title"><span data-icon="bus"></span>Bus</h3>
+              <fieldset>
+                <legend id="stopWalkLabel">Farthest Walk to a Bus Stop</legend>
+                <div class="range-row">
+                  <input type="range" id="stopWalkRange" aria-labelledby="stopWalkLabel" aria-describedby="stopWalkHint" />
+                  <output id="stopWalkValue" for="stopWalkRange"></output>
+                </div>
+                <p class="hint" id="stopWalkHint">
+                  Trips only use stops within this walk of where you start and of class. If no stop is that close, the
+                  app shows the walk instead.
+                </p>
+              </fieldset>
+            </div>
+
+            <div class="group">
+              <h3 class="group-title"><span data-icon="car"></span>Car</h3>
+              <fieldset>
+                <legend>Time to Park</legend>
+                <div class="seg" id="parkMinutesChoices"></div>
+                <p class="hint">Finding a space, parking, and getting out of the lot or garage.</p>
+              </fieldset>
+              <fieldset>
+                <legend>Where You Park</legend>
+                <div class="seg" id="parkingChoices"></div>
+                <div class="search parking-search" id="parkingPicker" hidden>
+                  <label for="parkingSearch" class="sr-only">Find Your Lot or Garage</label>
+                  <input
+                    type="search"
+                    id="parkingSearch"
+                    placeholder="Lot or garage name (try E15, C7)"
+                    autocomplete="off"
+                    role="combobox"
+                    aria-autocomplete="list"
+                    aria-expanded="false"
+                    aria-controls="parkingResults"
+                  />
+                  <ul id="parkingResults" class="search-results" role="listbox" aria-label="Matching parking" hidden></ul>
+                </div>
+                <p class="hint" id="parkingHint"></p>
+              </fieldset>
+            </div>
+
+            <div class="group">
+              <h3 class="group-title"><span data-icon="clock"></span>Every Trip</h3>
+              <fieldset>
+                <legend>Extra Time Before Class</legend>
+                <div class="seg" id="extraChoices"></div>
+                <p class="hint" id="extraHint"></p>
+              </fieldset>
+            </div>
+          </section>
+
+          <!-- Reminders: the three kinds side by side, then each one's settings. -->
+          <section class="tab-panel" id="settings-reminders" role="tabpanel" aria-labelledby="tab-reminders" tabindex="0" hidden>
+            <h2 class="panel-title">Reminders</h2>
+            <table class="compare">
+              <caption class="sr-only">The three kinds of reminder</caption>
+              <thead>
+                <tr><th scope="col">Kind</th><th scope="col">Reminds you</th><th scope="col">Works when</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">In the App</th><td>Before your leave time, then "Leave now"</td><td>The app is open</td></tr>
+                <tr><th scope="row">Push</th><td>Before class starts</td><td>Even when the app is closed (sign-in needed)</td></tr>
+                <tr><th scope="row">Calendar</th><td>Before class starts</td><td>In your calendar app, from the .ics file on the Classes page</td></tr>
+              </tbody>
+            </table>
+
+            <div class="group">
+              <h3 class="group-title"><span data-icon="bell"></span>In the App</h3>
+              <fieldset>
+                <legend>Reminders</legend>
+                <div class="seg" id="remindersChoices"></div>
+                <p class="hint">
+                  A banner in the app before your leave time and again when it's time to leave, and a notification when the
+                  app isn't on screen. Only while the app is open: a locked phone, or the browser in the background, won't get them.
+                </p>
+                <p class="hint" id="remindersStatus" role="status"></p>
+                <div class="row">
+                  <button type="button" class="btn ghost" id="allowNotifications" hidden>Allow Notifications</button>
+                  <button type="button" class="btn ghost" id="testReminder">Test Reminder</button>
+                </div>
+              </fieldset>
+              <fieldset>
+                <legend>Early Reminder</legend>
+                <div class="seg" id="reminderMinutesChoices"></div>
+                <p class="hint" id="reminderMinutesHint"></p>
+              </fieldset>
+              <fieldset>
+                <legend>Reminder Chime</legend>
+                <div class="seg" id="reminderChimeChoices"></div>
+                <p class="hint">A short chime when a reminder appears; phones that allow it also buzz.</p>
+              </fieldset>
+            </div>
+
+            <div class="group">
+              <h3 class="group-title"><span data-icon="bell"></span>Push Notifications</h3>
+              <fieldset class="push-field">
+                <legend class="sr-only">Push Notifications</legend>
+                <p class="hint">
+                  Reminders before each class starts, even when the app is closed or the screen is locked, sent by Chambana
+                  Nav's server. They know your classes, but not your live leave time. Needs you signed in; class changes reach
+                  them within about 15 minutes.
+                </p>
+                <p class="hint status-line" id="pushStatus" role="status"></p>
+                <div class="row">
+                  <button type="button" class="btn ghost" id="pushOn" hidden>Turn On for This Device</button>
+                  <button type="button" class="btn ghost" id="pushOff" hidden>Turn Off for This Device</button>
+                </div>
+                <div class="check-list" id="pushMinutesChoices" aria-label="When to send push notifications"></div>
+              </fieldset>
+            </div>
+          </section>
+
+          <section class="tab-panel" id="settings-places" role="tabpanel" aria-labelledby="tab-places" tabindex="0" hidden>
+            <h2 class="panel-title">Places</h2>
+            <p class="panel-intro">
+              Saved places come first in the From list on the Today page. Save one by picking a spot on the map, or with
+              Save on a search result; Home is set the first time you tap Home.
+            </p>
+            <ul class="item-list places-list" id="placesList"></ul>
+          </section>
+
+          <section class="tab-panel" id="settings-weather" role="tabpanel" aria-labelledby="tab-weather" tabindex="0" hidden>
+            <h2 class="panel-title">Weather</h2>
+            <fieldset>
+              <legend>Weather Adjustment</legend>
+              <div class="seg" id="weatherChoices"></div>
+              <p class="hint" id="weatherHint"></p>
+              <div class="weather-panel" id="weatherPanel" aria-live="polite"></div>
+            </fieldset>
+            <fieldset>
+              <legend>Weather Warnings</legend>
+              <div class="seg" id="weatherWarningsChoices"></div>
+              <p class="hint">
+                A banner at the top for official National Weather Service warnings, and for storms, ice, heavy snow, strong
+                wind, or dangerous cold or heat in the next 12 hours.
+              </p>
+              <p class="hint status-line" id="warningsStatus" role="status"></p>
+              <button type="button" class="btn ghost" id="showHiddenWarnings" hidden>Show Hidden Warnings</button>
+            </fieldset>
+          </section>
+
+          <section class="tab-panel" id="settings-look" role="tabpanel" aria-labelledby="tab-look" tabindex="0" hidden>
+            <h2 class="panel-title">Display</h2>
+            <fieldset>
+              <legend>Theme</legend>
+              <div class="seg" id="appearanceChoices"></div>
+            </fieldset>
+            <fieldset>
+              <legend>Accent Colour</legend>
+              <div class="seg seg-wrap" id="accentChoices"></div>
+              <p class="hint">Used for your route on the map and the main button on each screen.</p>
+            </fieldset>
+            <fieldset>
+              <legend>Time Format</legend>
+              <div class="seg" id="timeFormatChoices"></div>
+              <p class="hint" id="timeFormatHint"></p>
+            </fieldset>
+            <fieldset>
+              <legend id="timeZoneLabel">Time Zone</legend>
+              <select id="timeZoneSelect" aria-labelledby="timeZoneLabel" aria-describedby="timeZoneHint"></select>
+              <p class="hint" id="timeZoneHint"></p>
+            </fieldset>
+            <fieldset>
+              <legend>Units</legend>
+              <div class="seg" id="unitsChoices"></div>
+              <p class="hint" id="unitsHint"></p>
+            </fieldset>
+            <fieldset>
+              <legend>Area on the Map</legend>
+              <div class="seg" id="campusRingChoices"></div>
+              <p class="hint">
+                A dashed ring on the map, <span id="areaRadius">10 km</span> around the Main Quad, taking in Champaign, Urbana, and Savoy. Locations
+                outside it (GPS or a pinned spot) are refused.
+              </p>
+            </fieldset>
+          </section>
+
+          <section class="tab-panel" id="settings-data" role="tabpanel" aria-labelledby="tab-data" tabindex="0" hidden>
+            <h2 class="panel-title">Account &amp; Data</h2>
+            <fieldset class="account-field">
+              <legend>Account</legend>
+              <div id="accountSignedOut">
+                <p class="hint">
+                  Sign in to keep your classes, settings, and places the same on your phone and laptop. Without signing
+                  in, everything stays only in this browser.
+                </p>
+                <div class="account-options">
+                  <button type="button" class="btn ghost" id="signInGoogle">Sign In with Google</button>
+                  <button type="button" class="btn ghost" id="signInGithub">Sign In with GitHub</button>
+                  <button type="button" class="btn ghost" id="signInEmail" aria-expanded="false" aria-controls="emailForm">
+                    Sign In with Email
+                  </button>
+                </div>
+                <form class="email-form" id="emailForm" novalidate hidden>
+                  <label class="field-label" for="accountEmailInput">Email</label>
+                  <input type="email" id="accountEmailInput" autocomplete="email" inputmode="email" spellcheck="false" />
+                  <label class="field-label" for="accountPasswordInput">Password</label>
+                  <input type="password" id="accountPasswordInput" autocomplete="current-password" />
+                  <p class="hint">New accounts need at least 8 characters.</p>
+                  <div class="row">
+                    <button type="submit" class="btn accent" id="emailSignIn">Sign In</button>
+                    <button type="button" class="btn ghost" id="emailCreate">Create Account</button>
+                  </div>
+                  <button type="button" class="link-btn" id="forgotPassword">Forgot Password?</button>
+                </form>
+              </div>
+              <div id="accountSignedIn" hidden>
+                <div class="account-profile">
+                  <span class="account-avatar" id="accountAvatar" aria-hidden="true"></span>
+                  <div class="account-names">
+                    <p class="account-name" id="accountName"></p>
+                    <p class="account-who"><span class="sr-only">Signed in as </span><span id="accountEmail"></span></p>
+                  </div>
+                </div>
+                <p class="hint status-line" id="syncStatus" role="status" aria-live="polite"></p>
+                <p class="hint" id="confirmNote" hidden>
+                  We sent an email to confirm your address; syncing works without it.
+                  <button type="button" class="link-btn" id="resendConfirm">Send Again</button>
+                </p>
+                <p class="field-label">Ways to Sign In</p>
+                <ul class="account-methods" id="accountMethods"></ul>
+                <form class="email-form" id="addPasswordForm" novalidate hidden>
+                  <label class="field-label" for="newPasswordInput">New Password</label>
+                  <input type="password" id="newPasswordInput" autocomplete="new-password" />
+                  <p class="hint">At least 8 characters. Then you can sign in with your email and this password too.</p>
+                  <div class="row">
+                    <button type="submit" class="btn accent">Add Password</button>
+                    <button type="button" class="btn ghost" id="cancelAddPassword">Cancel</button>
+                  </div>
+                </form>
+                <div class="row">
+                  <button type="button" class="btn ghost" id="syncRetry" hidden>Try Again</button>
+                  <button type="button" class="btn ghost" id="signOut">Sign Out</button>
+                </div>
+                <button type="button" class="btn ghost danger" id="deleteAccount">Delete My Account</button>
+                <div class="confirm-box danger-box" id="deleteAccountConfirm" role="alertdialog" aria-labelledby="deleteAccountText" hidden>
+                  <p id="deleteAccountText"></p>
+                  <div class="delete-options" id="deleteOptions"></div>
+                  <div class="email-form" id="deletePasswordField" hidden>
+                    <label class="field-label" for="deletePasswordInput">Your Password</label>
+                    <input type="password" id="deletePasswordInput" autocomplete="current-password" />
+                    <button type="button" class="btn danger solid" id="deleteWithPassword">Confirm with Password and Delete</button>
+                  </div>
+                  <button type="button" class="btn ghost" id="deleteAccountCancel">Cancel</button>
+                </div>
+              </div>
+              <p id="accountMessage" role="status" hidden></p>
+            </fieldset>
+            <fieldset>
+              <legend>Backup</legend>
+              <p class="hint">
+                Your schedule and settings are saved in this browser (and in your account, if you're signed in). Download
+                a backup to keep a copy of your own, or to get them back if this browser's data is cleared.
+              </p>
+              <div class="row">
+                <button type="button" class="btn ghost" id="backupDownload">Download Backup</button>
+                <label class="btn ghost file-btn">
+                  Restore from Backup
+                  <input type="file" id="backupFile" accept=".json,application/json" />
+                </label>
+              </div>
+              <p id="backupMessage" role="status" hidden></p>
+              <div class="confirm-box" id="backupConfirm" hidden>
+                <p id="backupConfirmText"></p>
+                <div class="row">
+                  <button type="button" class="btn accent" id="backupReplace">Replace with Backup</button>
+                  <button type="button" class="btn ghost" id="backupCancel">Cancel</button>
+                </div>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>Calendar and PDF</legend>
+              <p class="hint">
+                Download your classes as a calendar file (.ics) for Google Calendar, Apple Calendar, or Outlook, with
+                reminders before each class if you like, or as a PDF of your week to print or keep.
+              </p>
+              <div class="row">
+                <button type="button" class="btn ghost" id="calendarFromSettings" aria-haspopup="dialog">Download Calendar (.ics)</button>
+                <button type="button" class="btn ghost" id="pdfFromSettings">Download PDF</button>
+              </div>
+              <p id="pdfMessageSettings" role="status" hidden></p>
+            </fieldset>
+            <fieldset class="reset-field">
+              <legend>Reset</legend>
+              <div class="row">
+                <button type="button" class="btn ghost danger" id="resetSettings">Reset Settings</button>
+                <button type="button" class="btn ghost danger" id="resetClasses">Remove Classes</button>
+                <button type="button" class="btn ghost danger" id="resetEverything">Reset Everything</button>
+              </div>
+              <div class="confirm-box danger-box" id="resetConfirm" role="alertdialog" aria-labelledby="resetConfirmText" hidden>
+                <p id="resetConfirmText"></p>
+                <div class="row">
+                  <button type="button" class="btn danger solid" id="resetYes">Yes, Reset</button>
+                  <button type="button" class="btn ghost" id="resetCancel">Cancel</button>
+                </div>
+              </div>
+              <p class="form-ok" id="resetMessage" role="status" hidden></p>
+            </fieldset>
+          </section>
+
+          <section class="tab-panel" id="settings-about" role="tabpanel" aria-labelledby="tab-about" tabindex="0" hidden>
+            <h2 class="panel-title">About</h2>
+            <fieldset>
+              <legend>Send Feedback</legend>
+              <form class="feedback-form" id="feedbackForm" novalidate>
+                <fieldset>
+                  <legend class="field-label">What Kind?</legend>
+                  <div class="seg" id="feedbackKinds"></div>
+                </fieldset>
+                <label class="field-label" for="feedbackMessage">Message</label>
+                <textarea id="feedbackMessage" rows="5" placeholder="What happened, or what would you change?"></textarea>
+                <p class="hint feedback-count" id="feedbackCount" aria-live="polite"></p>
+                <label class="field-label" for="feedbackContact">Your Email (Optional, for a Reply)</label>
+                <input type="email" id="feedbackContact" autocomplete="email" inputmode="email" spellcheck="false" />
+                <p class="hint">
+                  Sent along with it: the app's version, your screen size and browser, and how many classes and which travel
+                  mode you have. Never your classes, places, or location.
+                </p>
+                <button type="submit" class="btn accent" id="feedbackSend">Send Feedback</button>
+                <p id="feedbackMessageStatus" role="status" hidden></p>
+              </form>
+            </fieldset>
+            <fieldset class="credits">
+              <legend>Credits</legend>
+              <p>
+                Map, building locations, paths, roads, and parking © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>;
+                map tiles by <a href="https://openfreemap.org/">OpenFreeMap</a> and <a href="https://openmaptiles.org/">OpenMapTiles</a>.
+              </p>
+              <p>Bus times from the Champaign-Urbana Mass Transit District's published schedule; they don't show live delays.</p>
+              <p>
+                Map search by <a href="https://nominatim.org/">Nominatim</a>: only what you search for is sent to it, and only when you
+                choose Search the Map.
+              </p>
+              <p>
+                Weather forecast by <a href="https://open-meteo.com/">Open-Meteo.com</a> and warnings from the
+                <a href="https://www.weather.gov/">National Weather Service</a>, for campus as a whole (your location is never sent).
+              </p>
+              <p>
+                Your classes, settings, and places are saved in this browser. If you sign in, they're also saved to your
+                account so they stay the same on your other devices; the place you're starting from stays on each device.
+              </p>
+              <p>Type: Big Shoulders Display, made for the City of Chicago, and Public Sans, from the U.S. Web Design System.</p>
+            </fieldset>
+          </section>
         </div>
       </div>
-      <div class="dialog-body">
-        <section class="tab-panel" id="settings-travel" role="tabpanel" aria-labelledby="tab-travel" tabindex="0">
-          <fieldset>
-            <legend id="autoSavingLabel">Auto: Time It Must Save</legend>
-            <div class="range-row">
-              <input type="range" id="autoSavingRange" aria-labelledby="autoSavingLabel" aria-describedby="autoSavingHint" />
-              <output id="autoSavingValue" for="autoSavingRange"></output>
-            </div>
-            <p class="hint" id="autoSavingHint">
-              Auto picks the quickest way for each class but prefers walking: it takes the bus (or your bike or car)
-              only when that lets you leave at least this much later.
+    </main>
+
+    <!-- ===== Sheets: short tasks that sit over the page ===== -->
+    <dialog class="sheet" id="tripDialog" aria-labelledby="tripTitle">
+      <div class="sheet-head">
+        <h2 id="tripTitle">Trip</h2>
+        <button type="button" class="sheet-close" id="closeTrip" aria-label="Close trip"><span data-icon="close"></span></button>
+      </div>
+      <div class="sheet-tabs" role="tablist" aria-label="Trip" id="tripTabs">
+        <button type="button" role="tab" class="tab" id="tripTabOverview" aria-controls="tripDetailsBody">Trip Details</button>
+        <button type="button" role="tab" class="tab" id="tripTabDirections" aria-controls="directionsBody">Directions</button>
+      </div>
+      <div class="sheet-body">
+        <div class="trip-details" id="tripDetailsBody" role="tabpanel" aria-labelledby="tripTabOverview" tabindex="0"></div>
+        <div id="directionsBody" role="tabpanel" aria-labelledby="tripTabDirections" tabindex="0" hidden></div>
+      </div>
+    </dialog>
+
+    <dialog class="sheet" id="stopsDialog" aria-labelledby="stopHeading">
+      <div class="sheet-head">
+        <h2 id="stopHeading">Stops on the Way</h2>
+        <button type="button" class="sheet-close" id="closeStops" aria-label="Close stops"><span data-icon="close"></span></button>
+      </div>
+      <div class="sheet-body">
+        <div class="seg stop-scope" role="group" aria-label="What changes apply to">
+          <button type="button" class="stop-scope-btn" id="stopScopeEvery" aria-pressed="true">Every Time</button>
+          <button type="button" class="stop-scope-btn" id="stopScopeTrip" aria-pressed="false">This Trip Only</button>
+        </div>
+        <p class="hint" id="stopScopeHint"></p>
+        <div id="stopEditor"></div>
+      </div>
+    </dialog>
+
+    <dialog class="sheet" id="saveSpotDialog" aria-labelledby="saveSpotTitle">
+      <div class="sheet-head">
+        <h2 id="saveSpotTitle">Save This Pinned Spot</h2>
+        <button type="button" class="sheet-close" id="closeSaveSpot" aria-label="Close"><span data-icon="close"></span></button>
+      </div>
+      <div class="sheet-body">
+        <form class="save-spot" id="saveSpot">
+          <label class="field-label" for="spotName">Name</label>
+          <div class="input-row">
+            <input type="text" id="spotName" placeholder="e.g. My apartment" autocomplete="off" />
+            <button type="submit" class="btn accent">Save</button>
+          </div>
+          <button type="button" class="link-btn" id="saveSpotHome">Set as Home Instead</button>
+          <p id="saveSpotMessage" role="status" hidden></p>
+          <p class="hint">Drag the dot on the map to fine-tune the spot.</p>
+        </form>
+      </div>
+    </dialog>
+
+    <dialog class="sheet" id="calendarDialog" aria-labelledby="calendarTitle">
+      <div class="sheet-head">
+        <h2 id="calendarTitle">Add Classes to Your Calendar</h2>
+        <button type="button" class="sheet-close" id="closeCalendar" aria-label="Close"><span data-icon="close"></span></button>
+      </div>
+      <div class="sheet-body">
+        <form class="calendar-export" id="calendarForm" novalidate>
+          <p class="hint">
+            Downloads your classes as a calendar file (.ics) to open in Google Calendar, Apple Calendar, or Outlook. It's
+            a copy: after changing your classes, download it again.
+          </p>
+          <fieldset class="calendar-reminders" aria-describedby="calendarReminderHint">
+            <legend class="field-label">Reminders Before Each Class</legend>
+            <div class="check-list" id="calendarReminders"></div>
+            <p class="hint" id="calendarReminderHint">
+              Tick as many as you like, or none. Some calendar apps may use their own notification settings instead.
             </p>
           </fieldset>
-          <fieldset>
-            <legend>Auto: I Have a Bike on Campus</legend>
-            <div class="seg" id="autoBikeChoices"></div>
-          </fieldset>
-          <fieldset>
-            <legend>Auto: I Have a Car</legend>
-            <div class="seg" id="autoCarChoices"></div>
-          </fieldset>
-          <fieldset>
-            <legend>Walking Pace</legend>
-            <div class="seg" id="paceChoices"></div>
-            <p class="hint" id="paceHint"></p>
-          </fieldset>
-          <fieldset>
-            <legend>Biking Speed</legend>
-            <div class="seg" id="bikeSpeedChoices"></div>
-            <p class="hint" id="bikeHint"></p>
-          </fieldset>
-          <fieldset>
-            <legend id="stopWalkLabel">Farthest Walk to a Bus Stop</legend>
-            <div class="range-row">
-              <input type="range" id="stopWalkRange" aria-labelledby="stopWalkLabel" aria-describedby="stopWalkHint" />
-              <output id="stopWalkValue" for="stopWalkRange"></output>
-            </div>
-            <p class="hint" id="stopWalkHint">
-              In Bus mode, trips only use stops within this walk of where you start and of class. If no stop is that
-              close, the app shows the walk instead.
-            </p>
-          </fieldset>
-          <fieldset>
-            <legend>Time to Park</legend>
-            <div class="seg" id="parkMinutesChoices"></div>
-            <p class="hint">In Car mode: finding a space, parking, and getting out of the lot or garage.</p>
-          </fieldset>
-          <fieldset>
-            <legend>Where You Park</legend>
-            <div class="seg" id="parkingChoices"></div>
-            <div class="search parking-search" id="parkingPicker" hidden>
-              <label for="parkingSearch" class="sr-only">Find Your Lot or Garage</label>
-              <input
-                type="search"
-                id="parkingSearch"
-                placeholder="Lot or garage name (try E15, C7)"
-                autocomplete="off"
-                role="combobox"
-                aria-autocomplete="list"
-                aria-expanded="false"
-                aria-controls="parkingResults"
-              />
-              <ul id="parkingResults" class="search-results" role="listbox" aria-label="Matching parking" hidden></ul>
-            </div>
-            <p class="hint" id="parkingHint"></p>
-          </fieldset>
-          <fieldset>
-            <legend>Extra Time Before Class</legend>
-            <div class="seg" id="extraChoices"></div>
-            <p class="hint" id="extraHint"></p>
-          </fieldset>
-          <fieldset>
-            <legend>Reminders</legend>
-            <div class="seg" id="remindersChoices"></div>
-            <p class="hint">
-              A banner in the app before your leave time and again when it's time to leave, and a notification when the
-              app isn't on screen. Only while the app is open: a locked phone, or the browser in the background, won't get them.
-            </p>
-            <p class="hint" id="remindersStatus" role="status"></p>
-            <div class="reminder-buttons">
-              <button type="button" class="btn ghost" id="allowNotifications" hidden>Allow Notifications</button>
-              <button type="button" class="btn ghost" id="testReminder">Test Reminder</button>
-            </div>
-          </fieldset>
-          <fieldset>
-            <legend>Early Reminder</legend>
-            <div class="seg" id="reminderMinutesChoices"></div>
-            <p class="hint" id="reminderMinutesHint"></p>
-          </fieldset>
-          <fieldset>
-            <legend>Reminder Chime</legend>
-            <div class="seg" id="reminderChimeChoices"></div>
-            <p class="hint">A short chime when a reminder appears; phones that allow it also buzz.</p>
-          </fieldset>
-          <fieldset class="push-field">
-            <legend>Push Notifications</legend>
-            <p class="hint">
-              Reminders before each class starts, even when the app is closed or the screen is locked, sent by Chambana
-              Nav's server. They know your classes, but not your live leave time. Needs you signed in; class changes reach
-              them within about 15 minutes.
-            </p>
-            <p class="hint" id="pushStatus" role="status"></p>
-            <div class="reminder-buttons">
-              <button type="button" class="btn ghost" id="pushOn" hidden>Turn On for This Device</button>
-              <button type="button" class="btn ghost" id="pushOff" hidden>Turn Off for This Device</button>
-            </div>
-            <div class="calendar-reminder-list" id="pushMinutesChoices" aria-label="When to send push notifications"></div>
-          </fieldset>
-          <fieldset>
-            <legend>Your Places</legend>
-            <ul class="class-list places-list" id="placesList"></ul>
-          </fieldset>
-        </section>
-        <section class="tab-panel" id="settings-weather" role="tabpanel" aria-labelledby="tab-weather" tabindex="0">
-          <fieldset>
-            <legend>Weather</legend>
-            <div class="seg" id="weatherChoices"></div>
-            <p class="hint" id="weatherHint"></p>
-            <div class="weather-panel" id="weatherPanel" aria-live="polite"></div>
-          </fieldset>
-          <fieldset>
-            <legend>Weather Warnings</legend>
-            <div class="seg" id="weatherWarningsChoices"></div>
-            <p class="hint">
-              A banner at the top for official National Weather Service warnings, and for storms, ice, heavy snow, strong
-              wind, or dangerous cold or heat in the next 12 hours.
-            </p>
-            <p class="hint warnings-status" id="warningsStatus" role="status"></p>
-            <button type="button" class="btn ghost" id="showHiddenWarnings" hidden>Show Hidden Warnings</button>
-          </fieldset>
-        </section>
-        <section class="tab-panel" id="settings-look" role="tabpanel" aria-labelledby="tab-look" tabindex="0">
-          <fieldset>
-            <legend>Theme</legend>
-            <div class="seg" id="appearanceChoices"></div>
-          </fieldset>
-          <fieldset>
-            <legend>Accent Colour</legend>
-            <div class="seg seg-wrap" id="accentChoices"></div>
-          </fieldset>
-          <fieldset>
-            <legend>Time Format</legend>
-            <div class="seg" id="timeFormatChoices"></div>
-            <p class="hint" id="timeFormatHint"></p>
-          </fieldset>
-          <fieldset>
-            <legend id="timeZoneLabel">Time Zone</legend>
-            <select id="timeZoneSelect" aria-labelledby="timeZoneLabel" aria-describedby="timeZoneHint"></select>
-            <p class="hint" id="timeZoneHint"></p>
-          </fieldset>
-          <fieldset>
-            <legend>Units</legend>
-            <div class="seg" id="unitsChoices"></div>
-            <p class="hint" id="unitsHint"></p>
-          </fieldset>
-          <fieldset>
-            <legend>Area on the Map</legend>
-            <div class="seg" id="campusRingChoices"></div>
-            <p class="hint">
-              A dashed ring on the map, <span id="areaRadius">10 km</span> around the Main Quad, taking in Champaign, Urbana, and Savoy. Locations
-              outside it (GPS or a pinned spot) are refused.
-            </p>
-          </fieldset>
-        </section>
-        <section class="tab-panel" id="settings-data" role="tabpanel" aria-labelledby="tab-data" tabindex="0">
-          <fieldset class="account-field">
-            <legend>Account</legend>
-            <div id="accountSignedOut">
-              <p class="hint">
-                Sign in to keep your classes, settings, and places the same on your phone and laptop. Without signing
-                in, everything stays only in this browser.
-              </p>
-              <div class="account-options">
-                <button type="button" class="btn ghost" id="signInGoogle">Sign In with Google</button>
-                <button type="button" class="btn ghost" id="signInGithub">Sign In with GitHub</button>
-                <button type="button" class="btn ghost" id="signInEmail" aria-expanded="false" aria-controls="emailForm">
-                  Sign In with Email
-                </button>
-              </div>
-              <form class="email-form" id="emailForm" novalidate hidden>
-                <label class="field-label" for="accountEmailInput">Email</label>
-                <input type="email" id="accountEmailInput" autocomplete="email" inputmode="email" spellcheck="false" />
-                <label class="field-label" for="accountPasswordInput">Password</label>
-                <input type="password" id="accountPasswordInput" autocomplete="current-password" />
-                <p class="hint">New accounts need at least 8 characters.</p>
-                <div class="row account-buttons">
-                  <button type="submit" class="btn accent" id="emailSignIn">Sign In</button>
-                  <button type="button" class="btn ghost" id="emailCreate">Create Account</button>
-                </div>
-                <button type="button" class="link-btn" id="forgotPassword">Forgot Password?</button>
-              </form>
-            </div>
-            <div id="accountSignedIn" hidden>
-              <div class="account-profile">
-                <span class="account-avatar" id="accountAvatar" aria-hidden="true"></span>
-                <div class="account-names">
-                  <p class="account-name" id="accountName"></p>
-                  <p class="account-who"><span class="sr-only">Signed in as </span><span id="accountEmail"></span></p>
-                </div>
-              </div>
-              <p class="hint" id="syncStatus" role="status" aria-live="polite"></p>
-              <p class="hint" id="confirmNote" hidden>
-                We sent an email to confirm your address; syncing works without it.
-                <button type="button" class="link-btn" id="resendConfirm">Send Again</button>
-              </p>
-              <p class="field-label account-methods-label">Ways to Sign In</p>
-              <ul class="account-methods" id="accountMethods"></ul>
-              <form class="email-form" id="addPasswordForm" novalidate hidden>
-                <label class="field-label" for="newPasswordInput">New Password</label>
-                <input type="password" id="newPasswordInput" autocomplete="new-password" />
-                <p class="hint">At least 8 characters. Then you can sign in with your email and this password too.</p>
-                <div class="row account-buttons">
-                  <button type="submit" class="btn accent">Add Password</button>
-                  <button type="button" class="btn ghost" id="cancelAddPassword">Cancel</button>
-                </div>
-              </form>
-              <div class="row account-buttons">
-                <button type="button" class="btn ghost" id="syncRetry" hidden>Try Again</button>
-                <button type="button" class="btn ghost" id="signOut">Sign Out</button>
-              </div>
-              <button type="button" class="btn ghost danger delete-account-btn" id="deleteAccount">Delete My Account</button>
-              <div class="confirm-box danger-box" id="deleteAccountConfirm" role="alertdialog" aria-labelledby="deleteAccountText" hidden>
-                <p id="deleteAccountText"></p>
-                <div class="delete-options" id="deleteOptions"></div>
-                <div class="email-form" id="deletePasswordField" hidden>
-                  <label class="field-label" for="deletePasswordInput">Your Password</label>
-                  <input type="password" id="deletePasswordInput" autocomplete="current-password" />
-                  <button type="button" class="btn danger solid" id="deleteWithPassword">Confirm with Password and Delete</button>
-                </div>
-                <button type="button" class="btn ghost delete-cancel" id="deleteAccountCancel">Cancel</button>
-              </div>
-            </div>
-            <p id="accountMessage" role="status" hidden></p>
-          </fieldset>
-          <fieldset>
-            <legend>Backup</legend>
-            <p class="hint backup-hint">
-              Your schedule and settings are saved in this browser (and in your account, if you're signed in). Download
-              a backup to keep a copy of your own, or to get them back if this browser's data is cleared.
-            </p>
-            <div class="row">
-              <button type="button" class="btn ghost" id="backupDownload">Download Backup</button>
-              <label class="btn ghost file-btn">
-                Restore from Backup
-                <input type="file" id="backupFile" accept=".json,application/json" />
-              </label>
-            </div>
-            <p id="backupMessage" role="status" hidden></p>
-            <div class="confirm-box" id="backupConfirm" hidden>
-              <p id="backupConfirmText"></p>
-              <div class="row">
-                <button type="button" class="btn accent" id="backupReplace">Replace with Backup</button>
-                <button type="button" class="btn ghost" id="backupCancel">Cancel</button>
-              </div>
-            </div>
-          </fieldset>
-          <fieldset>
-            <legend>Calendar and PDF</legend>
-            <p class="hint">
-              Download your classes as a calendar file (.ics) for Google Calendar, Apple Calendar, or Outlook, with
-              reminders before each class if you like, or as a PDF of your week to print or keep.
-            </p>
-            <div class="row export-row">
-              <button type="button" class="btn ghost" id="calendarFromSettings" aria-haspopup="dialog">Download Calendar (.ics)</button>
-              <button type="button" class="btn ghost" id="pdfFromSettings">Download PDF</button>
-            </div>
-            <p id="pdfMessageSettings" role="status" hidden></p>
-          </fieldset>
-          <fieldset class="reset-field">
-            <legend>Reset</legend>
-            <div class="reset-buttons">
-              <button type="button" class="btn ghost danger" id="resetSettings">Reset Settings</button>
-              <button type="button" class="btn ghost danger" id="resetClasses">Remove Classes</button>
-              <button type="button" class="btn ghost danger" id="resetEverything">Reset Everything</button>
-            </div>
-            <div class="confirm-box danger-box" id="resetConfirm" role="alertdialog" aria-labelledby="resetConfirmText" hidden>
-              <p id="resetConfirmText"></p>
-              <div class="row">
-                <button type="button" class="btn danger solid" id="resetYes">Yes, Reset</button>
-                <button type="button" class="btn ghost" id="resetCancel">Cancel</button>
-              </div>
-            </div>
-            <p class="form-ok" id="resetMessage" role="status" hidden></p>
-          </fieldset>
-        </section>
+          <div class="field" id="calendarRepeatField" hidden>
+            <label class="field-label" for="calendarRepeatUntil">Repeat Until (Optional)</label>
+            <input type="date" id="calendarRepeatUntil" aria-describedby="calendarRepeatHint" />
+            <p class="hint" id="calendarRepeatHint"></p>
+          </div>
+          <button type="submit" class="btn accent" id="calendarDownload">Download</button>
+          <p id="calendarMessage" role="status" hidden></p>
+        </form>
+      </div>
+    </dialog>
+
+    <dialog class="sheet" id="syncChoiceDialog" aria-labelledby="syncChoiceTitle">
+      <div class="sheet-head">
+        <h2 id="syncChoiceTitle">Which Classes to Keep?</h2>
+        <button type="button" class="sheet-close" id="closeSyncChoice" aria-label="Cancel signing in"><span data-icon="close"></span></button>
+      </div>
+      <div class="sheet-body">
+        <p id="syncChoiceText"></p>
+        <div class="row">
+          <button type="button" class="btn accent" id="useAccountData"></button>
+          <button type="button" class="btn ghost" id="useDeviceData"></button>
+        </div>
+        <p class="hint">The other set is replaced on every device. Closing this cancels signing in and changes nothing.</p>
       </div>
     </dialog>
 
